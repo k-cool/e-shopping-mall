@@ -1,15 +1,10 @@
 import React from 'react';
+import Directory from '../components/directory/Directory';
+import './HomePage.scss';
 
 const Homepage = () => (
   <div className='homepage'>
-    <div className='directoryMenu'>
-      <div className='menuItem'>
-        <div className='content'>
-          <h1 className='title'>hat</h1>
-          <span className='subtitle'>explanation</span>
-        </div>
-      </div>
-    </div>
+    <Directory />
   </div>
 );
 
