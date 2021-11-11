@@ -1,21 +1,16 @@
 import React from 'react';
-import { Route, Routes, BrowserRouter } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 
-import Homepage from './pages/HomePage/HomePage';
-import ShopPage from './pages/ShopPage/ShopPage';
-import NotFound from './components/NotFound';
+import Header from './components/Header/Header';
 
 import './App.scss';
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path='/' element={<Homepage />} />
-        <Route path='/shop' element={<ShopPage />} />
-        <Route path='*' element={<NotFound />} />
-      </Routes>
-    </BrowserRouter>
+    <div>
+      <Header />
+      <Outlet />
+    </div>
   );
 };
 
