@@ -4,6 +4,7 @@ import { auth } from '../../firebase/firebaseUtils';
 
 import { ReactComponent as Logo } from '../../assets/crown.svg';
 import './Header.scss';
+import UserInfo from '../UserInfo/UserInfo';
 
 const Header = ({ currentUser }) => {
   return (
@@ -30,6 +31,7 @@ const Header = ({ currentUser }) => {
             SIGN IN
           </Link>
         )}
+        {currentUser ? <UserInfo {...currentUser} /> : null}
       </nav>
     </div>
   );
