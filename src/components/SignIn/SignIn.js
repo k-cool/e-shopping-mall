@@ -25,22 +25,8 @@ export default class SignIn extends Component {
     this.setState({ [name]: value });
   };
 
-  renderSwitch = selected => {
-    switch (selected) {
-      case 'green':
-        return <span>green</span>;
-      case 'red':
-        return <span>red</span>;
-      case 'yellow':
-        return <span>yellow</span>;
-      default:
-        return <span>not selected</span>;
-    }
-  };
-
   render() {
     const { email, password } = this.state;
-    const selected = 'asdkf';
 
     return (
       <div className='SignIn'>
@@ -72,10 +58,6 @@ export default class SignIn extends Component {
             </CustomButton>
           </div>
         </form>
-        <div className='test'>
-          <h2>selected color</h2>
-          {this.renderSwitch(selected)}
-        </div>
       </div>
     );
   }

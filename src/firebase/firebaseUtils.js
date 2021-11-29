@@ -1,9 +1,6 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -13,6 +10,30 @@ const firebaseConfig = {
   storageBucket: 'eshoppingm-c3c5c.appspot.com',
   messagingSenderId: '942939085365',
   appId: '1:942939085365:web:aac0d984cde0705e9c2f7c',
+};
+
+export const createUserProfileDocument = async (userAuth, additionalData) => {
+  if (!userAuth) return;
+  const userRef = doc(firestore, `/user/${userAuth.uid}`);
+  const snapShot = await getDoc(userRef);
+
+  if (!snapShot.exists()) {
+    const { displayName, email } = userAuth;
+    const createdAt = new Date();
+
+    try {
+      await setDoc(userRef, {
+        displayName: displayName || additionalData.displayName,
+        email: email,
+        createdAt: createdAt,
+        ...additionalData,
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  return userRef;
 };
 
 // Initialize Firebase
