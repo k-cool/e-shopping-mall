@@ -8,6 +8,7 @@ import './Header.scss';
 import UserInfo from '../UserInfo/UserInfo';
 
 const Header = ({ currentUser }) => {
+  console.log(currentUser);
   return (
     <div className='Header'>
       <Link className='logoContainer' to='/'>

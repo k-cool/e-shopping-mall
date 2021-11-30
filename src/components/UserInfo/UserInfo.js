@@ -1,8 +1,10 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import './UserInfo.scss';
 
-const UserInfo = ({ photoURL, displayName }) => {
+const UserInfo = currentUser => {
+  const { displayName, photoURL } = currentUser;
   return (
     <div className='UserInfo'>
       <div className='imgWrapper'>
@@ -17,4 +19,8 @@ const UserInfo = ({ photoURL, displayName }) => {
   );
 };
 
-export default UserInfo;
+const mapStateToProps = rootState => ({
+  currentUser: rootState.user.currentUser,
+});
+
+export default connect(mapStateToProps)(UserInfo);
