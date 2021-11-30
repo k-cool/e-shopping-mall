@@ -6,22 +6,19 @@ import {
   firestore,
 } from './firebase/firebaseUtils';
 import { doc, onSnapshot } from '@firebase/firestore';
+import { connect } from 'react-redux';
+import { setCurrentUser } from './redux/user/userAction';
 
 import Header from './components/Header/Header';
 
 import './App.scss';
 
 class App extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      currentUser: null,
-    };
-  }
-
   unsubscribeFromAuth = null;
 
   componentDidMount() {
+    const { setCurrentUser } = this.props;
+
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       if (userAuth) {
         await createUserProfileDocument(userAuth);
@@ -29,16 +26,14 @@ class App extends React.Component {
         const userRef = doc(firestore, 'user', userAuth.uid);
 
         onSnapshot(userRef, doc => {
-          this.setState({
-            currentUser: {
-              id: doc.id,
-              photoURL: userAuth.photoURL,
-              ...doc.data(),
-            },
+          setCurrentUser({
+            id: doc.id,
+            photoURL: userAuth.photoURL,
+            ...doc.data(),
           });
         });
       } else {
-        this.setState({ currentUser: userAuth });
+        setCurrentUser({ userAuth });
       }
     });
   }
@@ -48,14 +43,17 @@ class App extends React.Component {
   }
 
   render() {
-    const { currentUser } = this.state;
     return (
-      <div>
-        <Header currentUser={currentUser} />
+      <>
+        <Header />
         <Outlet />
-      </div>
+      </>
     );
   }
 }
 
-export default App;
+const mapDispatchToProps = dispatch => ({
+  setCurrentUser: user => dispatch(setCurrentUser(user)),
+});
+
+export default connect(null, mapDispatchToProps)(App);
