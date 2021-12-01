@@ -1,10 +1,12 @@
 import React from 'react';
 import { Route, Routes, BrowserRouter, Navigate } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { selectCurrentUser } from './redux/user/userSelectors';
 
 import App from './App';
 import Homepage from './pages/HomePage/HomePage';
 import ShopPage from './pages/ShopPage/ShopPage';
+import CheckoutPage from './pages/CheckoutPage/CheckoutPage';
 import SignInAndSignUp from './pages/SignInAndSignUp/SignInAndSignUp';
 import NotFound from './components/NotFound/NotFound';
 
@@ -15,6 +17,7 @@ const Router = ({ currentUser }) => {
         <Route element={<App />}>
           <Route path='/' element={<Homepage />} />
           <Route path='/shop' element={<ShopPage />} />
+          <Route path='/checkout' element={<CheckoutPage />} />
           <Route
             path='/signin'
             element={
@@ -29,7 +32,7 @@ const Router = ({ currentUser }) => {
 };
 
 const mapStateToProps = rootState => ({
-  currentUser: rootState.user.currentUser,
+  currentUser: selectCurrentUser(rootState),
 });
 
 export default connect(mapStateToProps)(Router);

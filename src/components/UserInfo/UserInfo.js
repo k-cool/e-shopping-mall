@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { selectCurrentUser } from '../../redux/user/userSelectors';
 
 import './UserInfo.scss';
 
@@ -20,7 +21,7 @@ const UserInfo = currentUser => {
 };
 
 const mapStateToProps = rootState => ({
-  currentUser: rootState.user.currentUser,
+  currentUser: selectCurrentUser,
 });
 
 export default connect(mapStateToProps)(UserInfo);
