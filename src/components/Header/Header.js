@@ -6,9 +6,10 @@ import { connect } from 'react-redux';
 import { ReactComponent as Logo } from '../../assets/crown.svg';
 import './Header.scss';
 import UserInfo from '../UserInfo/UserInfo';
+import CartIcon from '../CartIcon/CartIcon';
+import CartDropdown from '../CartDropdown/CartDropdown';
 
-const Header = ({ currentUser }) => {
-  console.log(currentUser);
+const Header = ({ currentUser, hidden }) => {
   return (
     <div className='Header'>
       <Link className='logoContainer' to='/'>
@@ -33,14 +34,17 @@ const Header = ({ currentUser }) => {
             SIGN IN
           </Link>
         )}
-        {currentUser ? <UserInfo {...currentUser} /> : null}
+        {currentUser && <CartIcon />}
+        {currentUser && <UserInfo {...currentUser} />}
       </nav>
+      {!hidden && <CartDropdown />}
     </div>
   );
 };
 
-const mapStateToProps = rootState => ({
-  currentUser: rootState.user.currentUser,
+const mapStateToProps = ({ user: { currentUser }, cart: { hidden } }) => ({
+  currentUser,
+  hidden,
 });
 
 export default connect(mapStateToProps)(Header);
