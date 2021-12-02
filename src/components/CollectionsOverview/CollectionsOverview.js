@@ -1,0 +1,24 @@
+import React from 'react';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { selectCollections } from '../../redux/shop/shopSelectors';
+
+import CollectionPreview from '../CollectionPreview/CollectionPreview';
+
+import './CollectionsOverview.scss';
+
+const CollectionsOverview = ({ collections }) => {
+  return (
+    <div className='CollectionsOverview'>
+      {collections.map(({ id, ...otherCollectionProps }) => (
+        <CollectionPreview key={id} {...otherCollectionProps} />
+      ))}
+    </div>
+  );
+};
+
+const mpaStateToProps = createStructuredSelector({
+  collections: selectCollections,
+});
+
+export default connect(mpaStateToProps)(CollectionsOverview);
