@@ -5,7 +5,8 @@ import {
   createUserProfileDocument,
   firestore,
 } from './firebase/firebaseUtils';
-import { doc, onSnapshot } from '@firebase/firestore';
+import { doc, onSnapshot, getDoc } from 'firebase/firestore';
+import { onAuthStateChanged } from 'firebase/auth';
 import { connect } from 'react-redux';
 import { setCurrentUser } from './redux/user/userAction';
 
@@ -19,18 +20,17 @@ class App extends React.Component {
   componentDidMount() {
     const { setCurrentUser } = this.props;
 
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+    this.unsubscribeFromAuth = onAuthStateChanged(auth, async userAuth => {
       if (userAuth) {
         await createUserProfileDocument(userAuth);
 
         const userRef = doc(firestore, 'user', userAuth.uid);
 
-        onSnapshot(userRef, doc => {
-          setCurrentUser({
-            id: doc.id,
-            photoURL: userAuth.photoURL,
-            ...doc.data(),
-          });
+        const snapShot = await getDoc(userRef);
+        setCurrentUser({
+          id: snapShot.id,
+          photoURL: userAuth.photoURL,
+          ...snapShot.data(),
         });
       } else {
         setCurrentUser(null);

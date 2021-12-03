@@ -20,10 +20,17 @@ export default class SignIn extends Component {
     e.preventDefault();
     const { email, password } = this.state;
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const tm = await signInWithEmailAndPassword(auth, email, password);
+      console.log(tm);
       this.setState({ email: '', password: '' });
     } catch (err) {
-      console.error(err);
+      if (err.code === 'auth/user-not-found')
+        alert('존재하지 않는 계정입니다.');
+      else if (err.code === 'auth/wrong-password')
+        alert('비밀번호가 잘못되었습니다.');
+      else console.error(err);
+    } finally {
+      this.setState({ email: '', password: '' });
     }
   };
 

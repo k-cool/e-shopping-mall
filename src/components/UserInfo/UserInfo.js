@@ -20,7 +20,7 @@ const UserInfo = currentUser => {
   );
 };
 
-const mapStateToProps = rootState => ({
+const mapStateToProps = () => ({
   currentUser: selectCurrentUser,
 });
 

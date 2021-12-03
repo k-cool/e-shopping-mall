@@ -20,7 +20,6 @@ export default class SignUp extends React.Component {
 
   handleSubmit = async event => {
     event.preventDefault();
-
     const { displayName, email, password, confirmPassword } = this.state;
 
     if (password.length < 6)
@@ -34,18 +33,19 @@ export default class SignUp extends React.Component {
         email,
         password
       );
-
       await createUserProfileDocument(user, { displayName });
     } catch (err) {
-      console.error(err);
-    }
+      if (err.code === 'auth/invalid-email')
+        alert('이메일이 유효하지 않습니다.');
+      else console.error(err);
 
-    this.setState({
-      displayName: '',
-      email: '',
-      password: '',
-      confirmPassword: '',
-    });
+      this.setState({
+        displayName: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+      });
+    }
   };
 
   handleChange = event => {
