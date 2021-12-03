@@ -1,12 +1,8 @@
 import React from 'react';
-import CollectionsOverview from '../../components/CollectionsOverview/CollectionsOverview';
+import { Outlet } from 'react-router';
 
 const ShopPage = () => {
-  return (
-    <div>
-      <CollectionsOverview />
-    </div>
-  );
+  return <Outlet />;
 };
 
 export default ShopPage;
