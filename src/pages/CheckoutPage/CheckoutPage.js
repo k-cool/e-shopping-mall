@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import CheckoutItem from '../../components/CheckoutItem/CheckoutItem';
+import StripeCheckoutButton from '../../components/StripeCheckoutButton/StripeCheckoutButton';
 import {
   selectCartItems,
   selectCartTotal,
@@ -34,6 +35,11 @@ const CheckoutPage = ({ cartItems, total }) => {
       ))}
       <div className='total'>
         <span>TOTAL: $ {total}</span>
+      </div>
+      <StripeCheckoutButton price={total} />
+      <div className='testWarning'>
+        *테스트를 위해서 아래의 카드번호를 사용해주세요.
+        <div>4242 4242 4242 4242, 미래의 아무 년/월, 아무숫자 3자리</div>
       </div>
     </div>
   );
