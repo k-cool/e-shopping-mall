@@ -5,7 +5,7 @@ import {
   createUserProfileDocument,
   firestore,
 } from './firebase/firebaseUtils';
-import { doc, onSnapshot, getDoc } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
 import { connect } from 'react-redux';
 import { setCurrentUser } from './redux/user/userAction';
