@@ -1,6 +1,13 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
-import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
+import {
+  getFirestore,
+  writeBatch,
+  collection,
+  doc,
+  getDoc,
+  setDoc,
+} from 'firebase/firestore';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -12,6 +19,20 @@ const firebaseConfig = {
   appId: '1:942939085365:web:aac0d984cde0705e9c2f7c',
 };
 
+// Initialize Firebase
+const firebaseApp = initializeApp(firebaseConfig);
+
+// get features that you need
+export const auth = getAuth(firebaseApp);
+export const firestore = getFirestore(firebaseApp);
+export default firebaseApp;
+
+// google sign in
+const provider = new GoogleAuthProvider();
+provider.setCustomParameters({ params: 'select_account' });
+export const signInWithGoogle = () => signInWithPopup(auth, provider);
+
+// utils
 export const createUserProfileDocument = async (userAuth, additionalData) => {
   if (!userAuth) return;
 
@@ -21,8 +42,6 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   if (!snapShot.exists()) {
     const { displayName, email } = userAuth;
     const createdAt = new Date();
-
-    console.log(displayName, additionalData);
 
     try {
       await setDoc(userRef, {
@@ -39,15 +58,15 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   return userRef;
 };
 
-// Initialize Firebase
-const firebaseApp = initializeApp(firebaseConfig);
+export const addCollectionAndDocuments = async (collectionKey, objToAdd) => {
+  const collectionRef = collection(firestore, collectionKey);
 
-// get features that you need
-export const auth = getAuth(firebaseApp);
-export const firestore = getFirestore(firebaseApp);
+  const batch = writeBatch(firestore);
 
-const provider = new GoogleAuthProvider();
-provider.setCustomParameters({ params: 'select_account' });
-export const signInWithGoogle = () => signInWithPopup(auth, provider);
+  objToAdd.forEach(obj => {
+    const newDocRef = doc(collectionRef);
+    batch.set(newDocRef, obj);
+  });
 
-export default firebaseApp;
+  return await batch.commit();
+};

@@ -17,8 +17,8 @@ const CollectionsOverview = ({ collections }) => {
   );
 };
 
-const mpaStateToProps = createStructuredSelector({
+const mapStateToProps = createStructuredSelector({
   collections: selectCollectionsForPreview,
 });
 
-export default connect(mpaStateToProps)(CollectionsOverview);
+export default connect(mapStateToProps)(CollectionsOverview);
