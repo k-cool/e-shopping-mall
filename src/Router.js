@@ -1,13 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Route, Routes, BrowserRouter, Navigate } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { selectIsCollectionFetching } from './redux/shop/shopSelectors';
 import { selectCurrentUser } from './redux/user/userSelectors';
-import { collection, onSnapshot } from 'firebase/firestore';
-import { updateCollections } from './redux/shop/shopActions';
-import {
-  convertCollectionsSnapshotToMap,
-  firestore,
-} from './firebase/firebaseUtils';
+import { fetchCollectionsStartAsync } from './redux/shop/shopActions';
 
 import App from './App';
 import Homepage from './pages/HomePage/HomePage';
@@ -18,21 +15,13 @@ import NotFound from './components/NotFound/NotFound';
 import CollectionsOverview from './components/CollectionsOverview/CollectionsOverview';
 import Collection from './components/Collection/Collection';
 
-const Router = ({ currentUser, updateCollections }) => {
-  const [loading, setLoading] = useState(true);
+const Router = props => {
+  const { currentUser, isCollectionFetching, fetchCollectionsStartAsync } =
+    props;
 
   useEffect(() => {
-    let unsubscribeFromSnapshot = null;
-    const collectionRef = collection(firestore, 'collections');
-
-    unsubscribeFromSnapshot = onSnapshot(collectionRef, async snapShot => {
-      const collectionsMap = convertCollectionsSnapshotToMap(snapShot);
-      updateCollections(collectionsMap);
-      setLoading(false);
-
-      return unsubscribeFromSnapshot();
-    });
-  });
+    fetchCollectionsStartAsync();
+  }, [fetchCollectionsStartAsync]);
 
   return (
     <BrowserRouter>
@@ -42,11 +31,11 @@ const Router = ({ currentUser, updateCollections }) => {
           <Route path='/shop' element={<ShopPage />}>
             <Route
               path=''
-              element={<CollectionsOverview isLoading={loading} />}
+              element={<CollectionsOverview isLoading={isCollectionFetching} />}
             />
             <Route
               path=':categoryUrl'
-              element={<Collection isLoading={loading} />}
+              element={<Collection isLoading={isCollectionFetching} />}
             />
           </Route>
           <Route path='/checkout' element={<CheckoutPage />} />
@@ -63,13 +52,13 @@ const Router = ({ currentUser, updateCollections }) => {
   );
 };
 
-const mapStateToProps = rootState => ({
-  currentUser: selectCurrentUser(rootState),
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser,
+  isCollectionFetching: selectIsCollectionFetching,
 });
 
 const mapDispatchToProps = dispatch => ({
-  updateCollections: collectionsMap =>
-    dispatch(updateCollections(collectionsMap)),
+  fetchCollectionsStartAsync: () => dispatch(fetchCollectionsStartAsync()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Router);
