@@ -37,8 +37,4 @@ const mapStateToProps = rootState => ({
   cartItems: selectCartItems(rootState),
 });
 
-// const mapDispatchToProps = dispatch => ({
-//   toggleCartHidden: () => dispatch(toggleCartHidden()),
-// });
-
 export default connect(mapStateToProps)(CartDropdown);

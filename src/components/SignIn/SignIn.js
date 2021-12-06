@@ -20,8 +20,7 @@ export default class SignIn extends Component {
     e.preventDefault();
     const { email, password } = this.state;
     try {
-      const tm = await signInWithEmailAndPassword(auth, email, password);
-      console.log(tm);
+      await signInWithEmailAndPassword(auth, email, password);
       this.setState({ email: '', password: '' });
     } catch (err) {
       if (err.code === 'auth/user-not-found')

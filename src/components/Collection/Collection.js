@@ -2,14 +2,15 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import CollectionItem from '../CollectionItem/CollectionItem';
+import WithSpinner from '../SpinnerHOC/WithSpinner';
 
 import './Collection.scss';
 
 const Collection = () => {
   const { categoryUrl } = useParams();
   const collection = useSelector(state => {
-    const matchingCollection = state.shop.collections[categoryUrl];
-    return matchingCollection;
+    const { collections } = state.shop;
+    return collections ? collections[categoryUrl] : null;
   });
 
   const { title, items } = collection;
@@ -26,4 +27,4 @@ const Collection = () => {
   );
 };
 
-export default Collection;
+export default WithSpinner(Collection);
