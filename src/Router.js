@@ -2,7 +2,10 @@ import React, { useEffect } from 'react';
 import { Route, Routes, BrowserRouter, Navigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { selectIsCollectionFetching } from './redux/shop/shopSelectors';
+import {
+  selectIsCollectionFetching,
+  selectIsCollectionLoaded,
+} from './redux/shop/shopSelectors';
 import { selectCurrentUser } from './redux/user/userSelectors';
 import { fetchCollectionsStartAsync } from './redux/shop/shopActions';
 
@@ -16,8 +19,12 @@ import CollectionsOverview from './components/CollectionsOverview/CollectionsOve
 import Collection from './components/Collection/Collection';
 
 const Router = props => {
-  const { currentUser, isCollectionFetching, fetchCollectionsStartAsync } =
-    props;
+  const {
+    currentUser,
+    isCollectionFetching,
+    isCollectionLoaded,
+    fetchCollectionsStartAsync,
+  } = props;
 
   useEffect(() => {
     fetchCollectionsStartAsync();
@@ -35,7 +42,7 @@ const Router = props => {
             />
             <Route
               path=':categoryUrl'
-              element={<Collection isLoading={isCollectionFetching} />}
+              element={<Collection isLoading={!isCollectionLoaded} />}
             />
           </Route>
           <Route path='/checkout' element={<CheckoutPage />} />
@@ -55,6 +62,7 @@ const Router = props => {
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
   isCollectionFetching: selectIsCollectionFetching,
+  isCollectionLoaded: selectIsCollectionLoaded,
 });
 
 const mapDispatchToProps = dispatch => ({
