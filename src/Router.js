@@ -2,10 +2,6 @@ import React, { useEffect } from 'react';
 import { Route, Routes, BrowserRouter, Navigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import {
-  selectIsCollectionFetching,
-  selectIsCollectionLoaded,
-} from './redux/shop/shopSelectors';
 import { selectCurrentUser } from './redux/user/userSelectors';
 import { fetchCollectionsStartAsync } from './redux/shop/shopActions';
 
@@ -15,16 +11,11 @@ import ShopPage from './pages/ShopPage/ShopPage';
 import CheckoutPage from './pages/CheckoutPage/CheckoutPage';
 import SignInAndSignUp from './pages/SignInAndSignUp/SignInAndSignUp';
 import NotFound from './components/NotFound/NotFound';
-import CollectionsOverview from './components/CollectionsOverview/CollectionsOverview';
-import Collection from './components/Collection/Collection';
+import CollectionsOverviewContainer from './components/CollectionsOverview/CollectionsOverview.container';
+import CollectionContainer from './components/Collection/Collection.container';
 
 const Router = props => {
-  const {
-    currentUser,
-    isCollectionFetching,
-    isCollectionLoaded,
-    fetchCollectionsStartAsync,
-  } = props;
+  const { currentUser, fetchCollectionsStartAsync } = props;
 
   useEffect(() => {
     fetchCollectionsStartAsync();
@@ -36,14 +27,8 @@ const Router = props => {
         <Route element={<App />}>
           <Route path='/' element={<Homepage />} />
           <Route path='/shop' element={<ShopPage />}>
-            <Route
-              path=''
-              element={<CollectionsOverview isLoading={isCollectionFetching} />}
-            />
-            <Route
-              path=':categoryUrl'
-              element={<Collection isLoading={!isCollectionLoaded} />}
-            />
+            <Route path='' element={<CollectionsOverviewContainer />} />
+            <Route path=':categoryUrl' element={<CollectionContainer />} />
           </Route>
           <Route path='/checkout' element={<CheckoutPage />} />
           <Route
@@ -61,8 +46,6 @@ const Router = props => {
 
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
-  isCollectionFetching: selectIsCollectionFetching,
-  isCollectionLoaded: selectIsCollectionLoaded,
 });
 
 const mapDispatchToProps = dispatch => ({
