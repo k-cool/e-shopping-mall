@@ -1,7 +1,7 @@
 import {
-  FETCH_COLLECTINOS_FAILURE,
-  FETCH_COLLECTINOS_START,
-  FETCH_COLLECTINOS_SUCCESS,
+  FETCH_COLLECTIONS_FAILURE,
+  FETCH_COLLECTIONS_START,
+  FETCH_COLLECTIONS_SUCCESS,
 } from './shopTypes';
 import {
   convertCollectionsSnapshotToMap,
@@ -10,19 +10,20 @@ import {
 import { collection, getDocs } from '@firebase/firestore';
 
 export const fetchCollectionsStart = () => ({
-  type: FETCH_COLLECTINOS_START,
+  type: FETCH_COLLECTIONS_START,
 });
 
 export const fetchCollectionsSuccess = collectionsMap => ({
-  type: FETCH_COLLECTINOS_SUCCESS,
+  type: FETCH_COLLECTIONS_SUCCESS,
   payload: collectionsMap,
 });
 
 export const fetchCollectionsfailure = errorMessage => ({
-  type: FETCH_COLLECTINOS_FAILURE,
+  type: FETCH_COLLECTIONS_FAILURE,
   payload: errorMessage,
 });
 
+// thunk
 export const fetchCollectionsStartAsync = () => {
   return async dispatch => {
     const collectionRef = collection(firestore, 'collections');

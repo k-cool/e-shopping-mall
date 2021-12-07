@@ -1,7 +1,7 @@
 import {
-  FETCH_COLLECTINOS_FAILURE,
-  FETCH_COLLECTINOS_START,
-  FETCH_COLLECTINOS_SUCCESS,
+  FETCH_COLLECTIONS_FAILURE,
+  FETCH_COLLECTIONS_START,
+  FETCH_COLLECTIONS_SUCCESS,
 } from './shopTypes';
 
 const INITIAL_STATE = {
@@ -12,20 +12,20 @@ const INITIAL_STATE = {
 
 export const shopReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case FETCH_COLLECTINOS_START:
+    case FETCH_COLLECTIONS_START:
       return {
         ...state,
         isFetching: true,
       };
 
-    case FETCH_COLLECTINOS_SUCCESS:
+    case FETCH_COLLECTIONS_SUCCESS:
       return {
         ...state,
         isFetching: false,
         collections: action.payload,
       };
 
-    case FETCH_COLLECTINOS_FAILURE:
+    case FETCH_COLLECTIONS_FAILURE:
       return {
         ...state,
         isFetching: false,

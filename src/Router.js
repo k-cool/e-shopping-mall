@@ -3,7 +3,7 @@ import { Route, Routes, BrowserRouter, Navigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectCurrentUser } from './redux/user/userSelectors';
-import { fetchCollectionsStartAsync } from './redux/shop/shopActions';
+import { fetchCollectionsStart } from './redux/shop/shopActions';
 
 import App from './App';
 import Homepage from './pages/HomePage/HomePage';
@@ -15,11 +15,11 @@ import CollectionsOverviewContainer from './components/CollectionsOverview/Colle
 import CollectionContainer from './components/Collection/Collection.container';
 
 const Router = props => {
-  const { currentUser, fetchCollectionsStartAsync } = props;
+  const { currentUser, fetchCollectionsStart } = props;
 
   useEffect(() => {
-    fetchCollectionsStartAsync();
-  }, [fetchCollectionsStartAsync]);
+    fetchCollectionsStart();
+  }, [fetchCollectionsStart]);
 
   return (
     <BrowserRouter>
@@ -49,7 +49,7 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchCollectionsStartAsync: () => dispatch(fetchCollectionsStartAsync()),
+  fetchCollectionsStart: () => dispatch(fetchCollectionsStart()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Router);
