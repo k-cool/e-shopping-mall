@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import {
   auth,
@@ -14,13 +14,9 @@ import Header from './components/Header/Header';
 
 import './App.scss';
 
-class App extends React.Component {
-  unsubscribeFromAuth = null;
-
-  componentDidMount() {
-    const { setCurrentUser } = this.props;
-
-    this.unsubscribeFromAuth = onAuthStateChanged(auth, async userAuth => {
+const App = ({ setCurrentUser }) => {
+  useEffect(() => {
+    const unsubscribeFromAuth = onAuthStateChanged(auth, async userAuth => {
       if (userAuth) {
         await createUserProfileDocument(userAuth);
 
@@ -36,21 +32,17 @@ class App extends React.Component {
         setCurrentUser(null);
       }
     });
-  }
+    console.log('app render!');
+    return () => unsubscribeFromAuth();
+  }, [setCurrentUser]);
 
-  componentWillUnmount() {
-    this.unsubscribeFromAuth();
-  }
-
-  render() {
-    return (
-      <>
-        <Header />
-        <Outlet />
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <Header />
+      <Outlet />
+    </>
+  );
+};
 
 const mapDispatchToProps = dispatch => ({
   setCurrentUser: user => dispatch(setCurrentUser(user)),
