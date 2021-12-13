@@ -19,7 +19,6 @@ const Router = props => {
 
   useEffect(() => {
     fetchCollectionsStart();
-    console.log('router render!');
   }, [fetchCollectionsStart]);
 
   return (

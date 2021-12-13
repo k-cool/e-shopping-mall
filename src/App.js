@@ -32,7 +32,6 @@ const App = ({ setCurrentUser }) => {
         setCurrentUser(null);
       }
     });
-    console.log('app render!');
     return () => unsubscribeFromAuth();
   }, [setCurrentUser]);
 
